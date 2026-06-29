@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register-Trekking Management Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+    <div class="container-fluid">
+
+        <div class="row register-page">
+
+            <!-- Left Section -->
+
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center left-section">
+
+                <div class="brand-name">
+                     Trekking Management Application
+                </div>
+
+                <img src="{{ url_for('static', filename='images/image.png') }}"
+                     class="trek-image"
+                     alt="Mountain Illustration">
+
+                <h2 class="mt-4 fw-bold">
+                    Explore Trek Discover
+                </h2>
+
+            </div>
+
+            <!-- Right Section -->
+
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+
+                <div class="card shadow register-card">
+
+                    <div class="card-body p-5">
+
+                        <h2 class="text-center fw-bold">
+                            Create Account
+                        </h2>
+
+                        <p class="text-center text-muted mb-4">
+                            Register as a Trekker
+                        </p>
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+
+                                <div class="alert alert-warning">
+
+                                     {% for message in messages %}
+
+                                        {{ message }}
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+                       {% endwith %}
+
+                        <form method="POST">
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Username
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter Username"
+                                    required>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter Password"
+                                    required>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label class="form-label">
+                                    Confirm Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    class="form-control"
+                                    placeholder="Confirm Password"
+                                    required>
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn btn-success register-btn">
+
+                                Register
+
+                            </button>
+
+                        </form>
+
+                        <hr>
+
+                        <p class="text-center mb-2">
+                            Already have an account?
+                        </p>
+
+                        <div class="text-center">
+
+                            <a href="{{ url_for('login') }}">
+                                Login Here
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+</body>
+</html>

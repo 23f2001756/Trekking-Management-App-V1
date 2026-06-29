@@ -1,0 +1,146 @@
+/* Global Styles */
+
+body{
+    background-color: whitesmoke;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Login & Register Page */
+
+.login-page,
+.register-page{
+    height:100vh;
+}
+
+/* Left Panel */
+
+.left-section{
+    background-color: aliceblue;
+    border-right:1px solid lightgray;
+}
+
+.brand-name{
+    position:absolute;
+    top:25px;
+    left:30px;
+
+    font-size:1.5rem;
+    font-weight:bold;
+
+    color:black;
+}
+
+.trek-image{
+    width: 500px;
+    max-width:90%;
+    border-radius:15px;
+    box-shadow:0 8px 20px gray;
+}
+
+.tagline{
+    margin-top:25px;
+    font-weight:bold;
+    color:dimgray;
+}
+
+/* Login & Register Cards */
+
+.login-card,
+.register-card{
+
+    width:100%;
+    max-width:430px;
+
+    border:none;
+    border-radius:12px;
+}
+
+/* Buttons */
+
+.login-btn,
+.register-btn{
+
+    width:100%;
+
+}
+
+/* Hyperlinks*/
+
+a{
+
+    text-decoration:none;
+    color:blue;
+
+}
+
+a:hover{
+
+    text-decoration:underline;
+    color:darkblue;
+
+}
+/* Dashboard Layout */
+
+.sidebar{
+    min-height: 100vh;
+    background-color: aliceblue;
+    border-right: 1px solid lightgray;
+    padding-top: 20px;
+}
+
+.sidebar a{
+    display: block;
+    padding: 12px 20px;
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.sidebar a:hover{
+    background-color: lightblue;
+    color: black;
+}
+
+.dashboard-content{
+    padding: 30px;
+}
+
+.dashboard-title{
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-card{
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 2px 8px lightgray;
+    margin-bottom: 25px;
+}
+
+.action-card{
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 2px 8px lightgray;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.action-card:hover{
+    transform: translateY(-5px);
+}
+
+.action-card h5{
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.logout-btn{
+    width: 100%;
+}

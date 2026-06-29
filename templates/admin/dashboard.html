@@ -1,0 +1,85 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Admin Panel</h4>
+
+<a href="#"> Dashboard</a>
+
+<a href="#"> Manage Treks</a>
+
+<a href="#"> Manage Staff</a>
+
+<a href="#"> Manage Users</a>
+
+<a href="#"> View Bookings</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Welcome Admin
+</h2>
+
+<div class="info-card">
+
+    <h5>User Information</h5>
+
+    <hr>
+
+    <p><strong>Username:</strong> {{ current_user.username }}</p>
+
+    <p><strong>Role:</strong> {{ current_user.role }}</p>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+
+        <div class="action-card">
+
+            <h5>Manage Treks</h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="action-card">
+
+            <h5>Manage Staff</h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="action-card">
+
+            <h5>Users</h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="action-card">
+
+            <h5>Bookings</h5>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
