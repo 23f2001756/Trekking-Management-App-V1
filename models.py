@@ -23,9 +23,14 @@ class Trek(db.Model):
     __tablename__='treks'
     id=db.Column(db.Integer,primary_key=True)
     trek_name=db.Column(db.String(100),nullable=False)
+    destination=db.Column(db.String(100),nullable=False)
     difficulty=db.Column(db.String(20),default='Easy') # Easy,Moderate,Hard
     duration=db.Column(db.Integer,nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
     available_slots=db.Column(db.Integer,nullable=False)
+    start_date=db.Column(db.Date,nullable=False)
+    end_date=db.Column(db.Date,nullable=False)
+    description=db.Column(db.Text)
     status=db.Column(db.String(20),default='Open') # Open,Closed,Completed 
     assigned_staff_id = db.Column(db.Integer,db.ForeignKey("staff_profiles.id"),nullable=True)
 
