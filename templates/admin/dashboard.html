@@ -8,9 +8,9 @@ Admin Dashboard
 
 <h4 class="text-center mb-4">Admin Panel</h4>
 
-<a href="#"> Dashboard</a>
+<a href="{{url_for('admin.admin_dashboard')}}" class="active"> Dashboard</a>
 
-<a href="#"> Manage Treks</a>
+<a href="{{url_for('admin.list_treks')}}" > Manage Treks</a>
 
 <a href="#"> Manage Staff</a>
 
@@ -42,11 +42,16 @@ Admin Dashboard
 
     <div class="col-md-3">
 
-        <div class="action-card">
+        <a href="{{url_for('admin.list_treks')}}"
+           class="text-decoration-none">
 
-            <h5>Manage Treks</h5>
+            <div class="action-card">
 
-        </div>
+                <h5>Manage Treks</h5>
+
+            </div>
+        </a>
+
 
     </div>
 

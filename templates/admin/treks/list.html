@@ -1,0 +1,166 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Manage Treks
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Admin Panel</h4>
+
+<a href="{{ url_for('admin.admin_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="{{ url_for('admin.list_treks') }}" class="active">
+    Manage Treks
+</a>
+
+<a href="#">
+    Manage Staff
+</a>
+
+<a href="#">
+    Manage Users
+</a>
+
+<a href="#">
+    View Bookings
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Trek Management
+</h2>
+
+{% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-success alert-dismissible fade show">
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+<div class="info-card">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h4>All Treks</h4>
+
+        <a href="{{url_for('admin.create_trek')}}"
+           class="btn btn-success">
+
+            + Add Trek
+
+        </a>
+
+    </div>
+
+    <table class="table table-hover table-bordered">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Trek Name</th>
+
+                <th>Destination</th>
+
+                <th>Difficulty</th>
+
+                <th>Slots</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% if treks %}
+
+            {% for trek in treks %}
+
+            <tr>
+
+                <td>{{ trek.id }}</td>
+
+                <td>{{ trek.trek_name }}</td>
+
+                <td>{{ trek.destination }}</td>
+
+                <td>{{ trek.difficulty }}</td>
+
+                <td>{{ trek.available_slots }}</td>
+
+                <td>{{ trek.status }}</td>
+
+                <td>
+
+                    <a href="{{url_for('admin.edit_trek',id=trek.id)}}"
+                       class="btn btn-warning btn-sm">
+
+                        Edit
+
+                    </a>
+
+                    <a href="{{url_for('admin.delete_trek',id=trek.id)}}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are u sure u want to delete this Trek?');">
+
+                        Delete
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="7"
+                    class="text-center">
+
+                    No Treks Available
+
+                </td>
+
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

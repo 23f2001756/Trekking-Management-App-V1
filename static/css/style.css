@@ -104,6 +104,17 @@ a:hover{
     color: black;
 }
 
+.sidebar a.active{
+    background-color: dodgerblue;
+    color: white;
+    font-weight: bold;
+}
+
+.sidebar a.active:hover{
+    background-color: dodgerblue;
+    color: white;
+}
+
 .dashboard-content{
     padding: 30px;
 }
