@@ -1,0 +1,112 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+    Assign Staff
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Admin Panel</h4>
+
+<a href="{{ url_for('admin.admin_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="{{ url_for('admin.list_treks') }}">
+    Manage Treks
+</a>
+
+<a href="{{ url_for('admin.list_staff') }}">
+    Manage Staff
+</a>
+
+<a href="#">
+    Manage Users
+</a>
+
+<a href="#">
+    View Bookings
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Assign Staff
+</h2>
+
+<div class="info-card">
+
+    <h4 class="mb-4">
+
+        {{ trek.trek_name }}
+
+    </h4>
+
+    <p>
+
+        <strong>Destination:</strong>
+
+        {{ trek.destination }}
+
+    </p>
+
+    <p>
+
+        <strong>Difficulty:</strong>
+
+        {{ trek.difficulty }}
+
+    </p>
+
+    <form method="POST">
+
+        <div class="mb-3">
+
+            <label class="form-label">
+
+                Select Staff
+
+            </label>
+
+            <select
+                name="staff_id"
+                class="form-select"
+                required>
+
+                <option value="">
+                    -- Select Staff --
+                </option>
+
+                {% for staff in staff_members %}
+
+                <option value="{{ staff.id }}">
+
+                    {{ staff.user.username }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-success">
+            Assign Staff
+        </button>
+
+        <a
+            href="{{ url_for('admin.list_treks') }}"
+            class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

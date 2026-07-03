@@ -261,3 +261,35 @@ def delete_staff(id):
     return redirect(url_for("admin.list_staff"))
 
 
+@admin_bp.route("/admin/treks/assign/<int:id>", methods=["GET", "POST"])
+@login_required
+def assign_staff(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    trek = Trek.query.get_or_404(id)
+
+    staff_members = StaffProfile.query.filter_by(status="not assigned").all()
+
+    if request.method == "POST":
+
+        staff = StaffProfile.query.get(request.form["staff_id"])
+
+        trek.assigned_staff_id = staff.id
+
+        staff.status = "assigned"
+
+        db.session.commit()
+
+        flash("Staff assigned successfully!")
+
+        return redirect(url_for("admin.list_treks"))
+
+    return render_template("admin/treks/assign_staff.html",trek=trek,staff_members=staff_members)
+
+

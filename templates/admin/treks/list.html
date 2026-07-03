@@ -16,7 +16,7 @@ Manage Treks
     Manage Treks
 </a>
 
-<a href="#">
+<a href="{{url_for('admin.list_staff')}}">
     Manage Staff
 </a>
 
@@ -89,6 +89,8 @@ Manage Treks
 
                 <th>Difficulty</th>
 
+                <th>Assigned Staff</th>
+
                 <th>Slots</th>
 
                 <th>Status</th>
@@ -101,63 +103,96 @@ Manage Treks
 
         <tbody>
 
-        {% if treks %}
+            {% if treks %}
 
-            {% for trek in treks %}
+                {% for trek in treks %}
 
-            <tr>
+                    <tr>
 
-                <td>{{ trek.id }}</td>
+                        <td>{{ trek.id }}</td>
 
-                <td>{{ trek.trek_name }}</td>
+                        <td>{{ trek.trek_name }}</td>
 
-                <td>{{ trek.destination }}</td>
+                        <td>{{ trek.destination }}</td>
 
-                <td>{{ trek.difficulty }}</td>
+                        <td>{{ trek.difficulty }}</td>
 
-                <td>{{ trek.available_slots }}</td>
+                        <td>
 
-                <td>{{ trek.status }}</td>
+                {% if trek.assigned_staff %}
 
-                <td>
+                    {{ trek.assigned_staff.user.username }}
 
-                    <a href="{{url_for('admin.edit_trek',id=trek.id)}}"
-                       class="btn btn-warning btn-sm">
+                {% else %}
 
-                        Edit
+                    <span class="text-danger">
+                        Not Assigned
+                    </span>
 
+                {% endif %}
+
+            </td>
+
+            <td>{{ trek.available_slots }}</td>
+
+            <td>{{ trek.status }}</td>
+
+            <td>
+
+                <a
+                    href="{{ url_for('admin.edit_trek', id=trek.id) }}"
+                    class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                {% if trek.assigned_staff %}
+
+                    <button
+                        class="btn btn-secondary btn-sm"
+                        disabled>
+                        Assigned
+                    </button>
+
+                {% else %}
+
+                    <a
+                        href="{{ url_for('admin.assign_staff', id=trek.id) }}"
+                        class="btn btn-primary btn-sm">
+                        Assign Staff
                     </a>
 
-                    <a href="{{url_for('admin.delete_trek',id=trek.id)}}"
-                       class="btn btn-danger btn-sm"
-                       onclick="return confirm('Are u sure u want to delete this Trek?');">
+                {% endif %}
 
-                        Delete
+                <a
+                    href="{{ url_for('admin.delete_trek', id=trek.id) }}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Are you sure you want to delete this Trek?');">
+                    Delete
+                </a>
 
-                    </a>
+            </td>
 
-                </td>
+        </tr>
 
-            </tr>
+        {% endfor %}
 
-            {% endfor %}
+    {% else %}
 
-        {% else %}
+        <tr>
 
-            <tr>
+            <td colspan="8" class="text-center">
 
-                <td colspan="7"
-                    class="text-center">
+                No Treks Available
 
-                    No Treks Available
+            </td>
 
-                </td>
+        </tr>
 
-            </tr>
+{% endif %}
 
-        {% endif %}
+</tbody>
 
-        </tbody>
+        
 
     </table>
 
