@@ -1,5 +1,6 @@
 from flask import render_template, redirect, url_for,Blueprint,request,flash
 from flask_login import login_required, current_user
+from werkzeug.security import generate_password_hash
 
 from models import db,Trek,User,StaffProfile,Booking
 from datetime import datetime
@@ -143,5 +144,120 @@ def delete_trek(id):
     flash("Trek deleted successfully!")
 
     return redirect(url_for("admin.list_treks"))
+
+
+@admin_bp.route("/admin/staff")
+@login_required
+def list_staff():
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    staff_members = (User.query.filter_by(role="Staff").order_by(User.id).all())
+
+    return render_template("admin/staff/list.html",staff_members=staff_members)
+
+
+@admin_bp.route("/admin/staff/create", methods=["GET", "POST"])
+@login_required
+def create_staff():
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    if request.method == "POST":
+
+        user = User(
+            username=request.form["username"],
+            password=generate_password_hash(request.form["password"]),
+            role="Staff"
+        )
+
+        db.session.add(user)
+        db.session.commit()
+
+        staff_profile = StaffProfile(
+            id=user.id,
+            phone=request.form["phone"],
+            experience=int(request.form["experience"]),
+            status="not assigned"
+        )
+
+        db.session.add(staff_profile)
+        db.session.commit()
+
+        flash("Staff added successfully!")
+
+        return redirect(url_for("admin.list_staff"))
+
+    return render_template("admin/staff/create.html")
+
+
+@admin_bp.route("/admin/staff/edit/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_staff(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    user = User.query.get_or_404(id)
+    staff_profile = StaffProfile.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        user.username = request.form["username"]
+
+        new_password=request.form["password"]
+
+        if new_password:
+            user.password = generate_password_hash(new_password)
+
+        staff_profile.phone = request.form["phone"]
+
+        staff_profile.experience = int(request.form["experience"])
+
+        db.session.commit()
+
+        flash("Staff updated successfully!")
+
+        return redirect(url_for("admin.list_staff"))
+
+    return render_template("admin/staff/edit.html",user=user,staff_profile=staff_profile)
+
+
+@admin_bp.route("/admin/staff/delete/<int:id>")
+@login_required
+def delete_staff(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    user = User.query.get_or_404(id)
+    staff_profile = StaffProfile.query.get_or_404(id)
+
+    db.session.delete(staff_profile)
+    db.session.delete(user)
+
+    db.session.commit()
+
+    flash("Staff deleted successfully!")
+
+    return redirect(url_for("admin.list_staff"))
 
 

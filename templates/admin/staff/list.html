@@ -1,0 +1,159 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+    Manage Staff
+{% endblock %}
+
+{% block sidebar %}
+
+    <h4 class="text-center mb-4">Admin Panel</h4>
+
+    <a href="{{ url_for('admin.admin_dashboard') }}">
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('admin.list_treks') }}">
+        Manage Treks
+    </a>
+
+    <a href="{{ url_for('admin.list_staff') }}" class="active" >
+        Manage Staff
+    </a>
+
+    <a href="#">
+        Manage Users
+    </a>
+
+    <a href="#">
+        View Bookings
+    </a>
+
+{% endblock %}
+
+{% block content %}
+
+    <h2 class="dashboard-title">
+        Staff Management
+    </h2>
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissible fade show">
+
+                    {{ message }}
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+    <div class="info-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h4>All Staff</h4>
+
+            <a
+                href="{{url_for('admin.create_staff')}}"
+                class="btn btn-success"
+            >
+                + Add Staff
+            </a>
+
+        </div>
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Username</th>
+
+                    <th>Phone</th>
+
+                    <th>Experience</th>
+
+                    <th>Status</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% if staff_members %}
+
+                    {% for staff in staff_members %}
+
+                        <tr>
+
+                            <td>{{ staff.id }}</td>
+
+                            <td>{{ staff.username }}</td>
+
+                            <td>{{ staff.staff_profile.phone }}</td>
+
+                            <td>{{ staff.staff_profile.experience }} Years</td>
+
+                            <td>{{ staff.staff_profile.status }}</td>
+
+                            <td>
+
+                                <a
+                                    href="{{url_for('admin.edit_staff',id=staff.id)}}"
+                                    class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <a
+                                    href="{{url_for('admin.delete_staff',id=staff.id)}}"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure u want to delete this staff member?')">
+                                    Delete
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="text-center">
+                            No Staff Available
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+{% endblock %}
