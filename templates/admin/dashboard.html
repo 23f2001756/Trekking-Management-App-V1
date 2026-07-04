@@ -57,31 +57,43 @@ Admin Dashboard
 
     <div class="col-md-3">
 
-        <div class="action-card">
+            <a
+                href="{{ url_for('admin.list_staff') }}"
+                class="text-decoration-none">
 
-            <h5>Manage Staff</h5>
+                <div class="action-card">
 
-        </div>
+                    <h5>Manage Staff</h5>
+               </div>
+            </a>
+
+    </div>
+
+    <div class="col-md-3">
+         
+            <a
+                href="{{ url_for('admin.list_users') }}"
+                class="text-decoration-none">
+
+                <div class="action-card">
+
+                    <h5>Users</h5>
+
+                </div>
+            </a>
 
     </div>
 
     <div class="col-md-3">
 
-        <div class="action-card">
+        <a
+            href="{{ url_for('admin.list_bookings') }}"
+            class="text-decoration-none">
 
-            <h5>Users</h5>
+            <div class="action-card">
 
-        </div>
-
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="action-card">
-
-            <h5>Bookings</h5>
-
-        </div>
+                <h5>Bookings</h5>
+            </div>
 
     </div>
 
