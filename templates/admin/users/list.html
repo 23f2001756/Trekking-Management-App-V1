@@ -1,0 +1,212 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Manage Users
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">
+    Admin Panel
+</h4>
+
+<a href="{{ url_for('admin.admin_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="{{ url_for('admin.list_treks') }}">
+    Manage Treks
+</a>
+
+<a href="{{ url_for('admin.list_staff') }}">
+    Manage Staff
+</a>
+
+<a href="{{ url_for('admin.list_users') }}"
+   class="active">
+    Manage Users
+</a>
+
+<a href="{{ url_for('admin.list_bookings') }}">
+    View Bookings
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    User Management
+</h2>
+
+{% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-success alert-dismissible fade show">
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+
+
+<div class="info-card">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h4>
+            Registered Users
+        </h4>
+
+        <form
+            method="GET"
+            action="{{ url_for('admin.list_users') }}"
+            class="d-flex">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control me-2"
+                placeholder="Search User..."
+                value="{{ search }}">
+
+            <button
+                type="submit"
+                class="btn btn-primary me-2">
+
+                Search
+
+            </button>
+
+            <a
+                href="{{ url_for('admin.list_users') }}"
+                class="btn btn-secondary me-2 d-flex align-items-center justify-content-center">
+
+                Reset
+
+            </a>
+
+        </form>
+
+    </div>
+
+
+     <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Username</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% if users %}
+
+            {% for user in users %}
+
+            <tr>
+
+                <td>{{ user.id }}</td>
+
+                <td>{{ user.username }}</td>
+
+                <td>
+
+                    {% if user.is_active %}
+
+                        <span class="text-success">
+                            Active
+                        </span>
+
+                    {% else %}
+
+                        <span class="text-danger">
+                            Inactive
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if user.is_active %}
+            
+
+                        <a
+                            href="{{ url_for('admin.toggle_user_status', id=user.id) }}"
+                            class="btn btn-secondary btn-sm"
+                            onclick="return confirm('Deactivate this user?');">
+
+                            Deactivate
+
+                        </a>
+
+                        {% else %}
+
+                        <a
+                            href="{{ url_for('admin.toggle_user_status', id=user.id) }}"
+                            class="btn btn-success btn-sm">
+
+                            Activate
+
+                        </a>
+
+                        {% endif %}
+
+                                            
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="4"
+                    class="text-center">
+
+                    No Users Registered
+
+                </td>
+
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

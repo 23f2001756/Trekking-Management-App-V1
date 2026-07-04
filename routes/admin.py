@@ -36,8 +36,20 @@ def list_treks():
 
         return redirect(url_for("user.user_dashboard"))
      
-     treks=Trek.query.order_by(Trek.id).all()
+     search = request.args.get("search", "").strip()
 
+     if search:
+
+        treks = Trek.query.filter(
+            (Trek.trek_name.ilike(f"%{search}%")) |
+            (Trek.destination.ilike(f"%{search}%"))
+        ).order_by(Trek.id).all()
+
+     else:
+
+        treks = Trek.query.order_by(Trek.id).all()
+     
+    
      return render_template("admin/treks/list.html",treks=treks)
 
 
@@ -156,8 +168,26 @@ def list_staff():
             return redirect(url_for("staff.staff_dashboard"))
 
         return redirect(url_for("user.user_dashboard"))
+    
+    search = request.args.get("search", "").strip()
 
-    staff_members = (User.query.filter_by(role="Staff").order_by(User.id).all())
+    if search:
+
+        staff_members = User.query.filter(
+            User.role == "Staff",
+            (
+                User.username.ilike(f"%{search}%") |
+                StaffProfile.phone.ilike(f"%{search}%")
+            )
+        ).join(StaffProfile).order_by(User.id).all()
+
+    else:
+
+        staff_members = User.query.filter_by(
+            role="Staff"
+        ).order_by(User.id).all()
+
+    
 
     return render_template("admin/staff/list.html",staff_members=staff_members)
 
@@ -291,5 +321,109 @@ def assign_staff(id):
         return redirect(url_for("admin.list_treks"))
 
     return render_template("admin/treks/assign_staff.html",trek=trek,staff_members=staff_members)
+
+
+@admin_bp.route("/admin/users")
+@login_required
+def list_users():
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+    
+    search = request.args.get("search", "").strip()
+
+    if search:
+
+        users = User.query.filter(
+            User.role == "Trekker",
+            User.username.ilike(f"%{search}%")
+        ).order_by(User.id).all()
+
+    else:
+
+        users = User.query.filter_by(
+            role="Trekker"
+        ).order_by(User.id).all()
+
+   
+
+    return render_template("admin/users/list.html",users=users)
+
+
+@admin_bp.route("/admin/users/toggle/<int:id>")
+@login_required
+def toggle_user_status(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    user = User.query.get_or_404(id)
+
+    user.is_active = not user.is_active
+
+    db.session.commit()
+
+    if user.is_active:
+        flash("User activated successfully!")
+    else:
+        flash("User deactivated successfully!")
+
+    return redirect(url_for("admin.list_users"))
+
+
+@admin_bp.route("/admin/staff/toggle/<int:id>")
+@login_required
+def toggle_staff_status(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    user = User.query.get_or_404(id)
+
+    if user.role != "Staff":
+
+        flash("Invalid staff account.")
+
+        return redirect(url_for("admin.list_staff"))
+
+    user.is_active = not user.is_active
+
+    db.session.commit()
+
+    if user.is_active:
+
+        flash("Staff activated successfully!")
+
+    else:
+
+        flash("Staff deactivated successfully!")
+
+    return redirect(url_for("admin.list_staff"))
+
+
+@admin_bp.route("/admin/bookings")
+@login_required
+def list_bookings():
+
+    bookings = Booking.query.order_by(
+        Booking.id.desc()
+    ).all()
+
+    return render_template(
+        "admin/bookings/list.html",
+        bookings=bookings
+    )
 
 

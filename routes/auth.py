@@ -36,6 +36,13 @@ def login():
             flash("Invalid Password")
 
             return redirect(url_for("auth.login"))
+        
+        # Check if account is active
+        if not user.is_active:
+
+            flash("Your account has been deactivated. Please contact the administrator.")
+
+            return redirect(url_for("auth.login"))
 
        
         login_user(user)

@@ -20,11 +20,11 @@ Manage Treks
     Manage Staff
 </a>
 
-<a href="#">
+<a href="{{ url_for('admin.list_users')}}">
     Manage Users
 </a>
 
-<a href="#">
+<a href="{{ url_for('admin.list_bookings')}}">
     View Bookings
 </a>
 
@@ -66,12 +66,44 @@ Manage Treks
 
         <h4>All Treks</h4>
 
-        <a href="{{url_for('admin.create_trek')}}"
-           class="btn btn-success">
+        <form
+            method="GET"
+            action="{{ url_for('admin.list_treks') }}"
+            class="d-flex">
 
-            + Add Trek
+            <input
+                type="text"
+                name="search"
+                class="form-control me-2"
+                placeholder="Search Trek..."
+                value="{{ search }}">
 
-        </a>
+            <button
+                type="submit"
+                class="btn btn-primary me-2">
+
+                Search
+
+            </button>
+
+            <a
+                href="{{ url_for('admin.list_treks') }}"
+                class="btn btn-secondary me-2 d-flex align-items-center justify-content-center">
+
+                Reset
+
+            </a>
+
+
+            <a
+                href="{{url_for('admin.create_trek')}}"
+                class="btn btn-success">
+
+                + Add Trek
+
+            </a>
+        
+        </form>
 
     </div>
 

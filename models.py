@@ -10,6 +10,7 @@ class User(UserMixin,db.Model):
     username=db.Column(db.String(50),unique=True,nullable=False)
     password=db.Column(db.String(255),nullable=False)
     role=db.Column(db.String(20),default='Trekker') # Admin,Staff,Trekker
+    is_active=db.Column(db.Boolean(),default=True)
 
     # Relationships
     bookings = db.relationship("Booking",backref="user",lazy=True)

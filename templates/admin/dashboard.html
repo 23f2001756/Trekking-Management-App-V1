@@ -14,9 +14,9 @@ Admin Dashboard
 
 <a href="{{url_for('admin.list_staff')}}"> Manage Staff</a>
 
-<a href="#"> Manage Users</a>
+<a href="{{ url_for('admin.list_users')}}"> Manage Users</a>
 
-<a href="#"> View Bookings</a>
+<a href="{{ url_for('admin.list_bookings')}}"> View Bookings</a>
 
 {% endblock %}
 
