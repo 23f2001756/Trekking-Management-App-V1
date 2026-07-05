@@ -1,0 +1,83 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Staff Panel</h4>
+
+<a href="{{ url_for('staff.staff_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="#">
+    Assigned Treks
+</a>
+
+<a href="#">
+    Participants
+</a>
+
+<a href="{{ url_for('staff.staff_profile') }}" class="active">
+    My Profile
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    My Profile
+</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
+
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST">
+
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input
+            type="text"
+            name="phone"
+            class="form-control"
+            value="{{ profile.phone }}"
+            required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Experience (Years)</label>
+        <input
+            type="number"
+            name="experience"
+            class="form-control"
+            value="{{ profile.experience }}">
+    </div>
+
+    <button class="btn btn-primary">
+        Update Profile
+    </button>
+
+</form>
+
+
+    
+
+{% endblock %}
