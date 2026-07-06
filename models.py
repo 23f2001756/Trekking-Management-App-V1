@@ -32,7 +32,7 @@ class Trek(db.Model):
     start_date=db.Column(db.Date,nullable=False)
     end_date=db.Column(db.Date,nullable=False)
     description=db.Column(db.Text)
-    status=db.Column(db.String(20),default='Open') # Open,Closed,Completed 
+    status=db.Column(db.String(20),default='Open') # Open,Closed,Started,Ongoing,Completed
     assigned_staff_id = db.Column(db.Integer,db.ForeignKey("staff_profiles.id"),nullable=True)
 
     # Relationships

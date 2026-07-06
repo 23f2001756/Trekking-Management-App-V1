@@ -12,9 +12,11 @@ Staff Dashboard
     Dashboard
 </a>
 
-<a href="#"> Assigned Treks</a>
+<a href="{{ url_for('staff.assigned_treks')}}">
+    Assigned Treks
+</a>
 
-<a href="#"> Participants</a>
+
 
 <a href="{{ url_for('staff.staff_profile') }}">
     My Profile
@@ -42,51 +44,55 @@ Staff Dashboard
 
 <div class="row g-4">
 
-    <div class="col-md-3">
+    <div class="col-md-4">
 
-        <div class="action-card">
+        <a href="{{ url_for('staff.assigned_treks') }}" class="text-decoration-none">
 
-           <h5>Assigned Treks</h5>
+            <div class="action-card">
 
-           <h2>{{total_assigned}}</h2>
+                <h5>Assigned Treks</h5>
 
-        </div>
+                <!--<h2>{{total_assigned}}</h2>-->
 
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="action-card">
-
-            <h5>Registered Trekkers</h5>
-
-            <h2>{{total_registered}}</h2>
-
-        </div>
+            </div>
+        </a>
 
     </div>
 
-    <div class="col-md-3">
+   <!-- <div class="col-md-3">
 
         <div class="action-card">
 
-            <h5>Open Treks</h5>
+            <h5>View Participants</h5>
 
-            <h2>{{open_treks}}</h2>
+            
 
-        </div>
+        </div> 
+
+    </div>-->
+
+    <div class="col-md-4">
+        <a href=" {{url_for('staff.assigned_treks')}}" class="text-decoration-none">
+
+            <div class="action-card">
+
+                <h5>Manage Treks</h5>
+
+            </div>
+        </a>
 
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-4">
 
-        <div class="action-card">
+        <a href="{{ url_for('staff.staff_profile') }}" class="text-decoration-none">
 
-            <h5>Completed Treks</h5>
+            <div class="action-card">
 
-            <h2>{{ completed_treks }}</h2>
+                <h5>My Profile</h5>
 
-        </div>
+            </div>
+        </a>
 
     </div>
 

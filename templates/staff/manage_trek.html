@@ -1,0 +1,131 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Manage Trek
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Staff Panel</h4>
+
+<a href="{{ url_for('staff.staff_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="{{ url_for('staff.assigned_treks') }}">
+    Assigned Treks
+</a>
+
+
+
+<a href="{{ url_for('staff.staff_profile') }}">
+    My Profile
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Manage Trek
+</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+
+                {{ message }}
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Trek Name
+        </label>
+
+        <input
+            type="text"
+            class="form-control"
+            value="{{ trek.trek_name }}"
+            readonly>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Available Slots
+        </label>
+
+        <input
+            type="number"
+            name="available_slots"
+            class="form-control"
+            value="{{ trek.available_slots }}"
+            min="0"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Trek Status
+        </label>
+
+        <select
+            name="status"
+            class="form-select">
+
+            <option value="Open"
+                {% if trek.status=="Open" %}selected{% endif %}>
+                Open
+            </option>
+
+            <option value="Closed"
+                {% if trek.status=="Closed" %}selected{% endif %}>
+                Closed
+            </option>
+
+            <option value="Ongoing"
+                {% if trek.status =="Ongoing" %}selected{% endif %}>
+                Ongoing
+            </option>
+
+            <option value="Completed"
+                {% if trek.status=="Completed" %}selected{% endif %}>
+                Completed
+            </option>
+
+        </select>
+
+    </div>
+
+    <button class="btn btn-primary">
+        Save Changes
+    </button>
+
+    <a href="{{ url_for('staff.assigned_treks') }}"
+       class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+{% endblock %}

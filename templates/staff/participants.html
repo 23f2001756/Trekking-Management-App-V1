@@ -1,0 +1,91 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Participants
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Staff Panel</h4>
+
+<a href="{{ url_for('staff.staff_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="{{ url_for('staff.assigned_treks') }}">
+    Assigned Treks
+</a>
+
+<a href="#" class="active">
+    Participants
+</a>
+
+<a href="{{ url_for('staff.staff_profile') }}">
+    My Profile
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Participants - {{ trek.trek_name }}
+</h2>
+
+{% if bookings %}
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>Booking ID</th>
+            <th>Username</th>
+            <th>Booking Date</th>
+            <th>Booking Status</th>
+            <th>Payment Status</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for booking in bookings %}
+
+        <tr>
+
+            <td>{{ booking.id }}</td>
+
+            <td>{{ booking.user.username }}</td>
+
+            <td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
+
+            <td>{{ booking.booking_status }}</td>
+
+            <td>{{ booking.payment_status }}</td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    No participants have registered for this trek yet.
+
+</div>
+
+{% endif %}
+
+{% endblock %}
