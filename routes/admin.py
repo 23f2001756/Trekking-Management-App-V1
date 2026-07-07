@@ -124,6 +124,15 @@ def edit_trek(id):
         ).date()
         trek.description = request.form["description"]
 
+        if trek.status == "Completed" and trek.assigned_staff_id:
+
+            staff = StaffProfile.query.get(trek.assigned_staff_id)
+
+            if staff:
+                staff.status = "not assigned"
+
+            trek.assigned_staff_id = None
+
         db.session.commit()
 
         flash("Trek updated successfully!")
@@ -148,6 +157,18 @@ def delete_trek(id):
         return redirect(url_for("user.user_dashboard"))
 
     trek = Trek.query.get_or_404(id)
+
+    if trek.bookings:
+
+        flash("Cannot delete trek because bookings already exist.")
+
+        return redirect(url_for("admin.list_treks"))
+
+    if trek.assigned_staff_id:
+        staff = StaffProfile.query.get(trek.assigned_staff_id)
+
+        if staff:
+            staff.status = "not assigned"
 
     db.session.delete(trek)
 
@@ -205,9 +226,30 @@ def create_staff():
 
     if request.method == "POST":
 
+        username = request.form["username"]
+        password = request.form["password"]
+        full_name = request.form["full_name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+
+        existing_user = User.query.filter_by(username=username).first()
+
+        if existing_user:
+            flash("Username already exists.")
+            return redirect(url_for("admin.create_staff"))
+
+        existing_email = User.query.filter_by(email=email).first()
+
+        if existing_email:
+            flash("Email already exists.")
+            return redirect(url_for("admin.create_staff"))
+
         user = User(
             username=request.form["username"],
             password=generate_password_hash(request.form["password"]),
+            full_name=full_name,
+            email=email,
+            phone=phone,
             role="Staff"
         )
 
@@ -217,7 +259,6 @@ def create_staff():
         staff_profile = StaffProfile(
             id=user.id,
             phone=request.form["phone"],
-            experience=int(request.form["experience"]),
             status="not assigned"
         )
 
@@ -245,6 +286,7 @@ def edit_staff(id):
     user = User.query.get_or_404(id)
     staff_profile = StaffProfile.query.get_or_404(id)
 
+
     if request.method == "POST":
 
         user.username = request.form["username"]
@@ -253,6 +295,12 @@ def edit_staff(id):
 
         if new_password:
             user.password = generate_password_hash(new_password)
+         
+        user.full_name = request.form["full_name"]
+
+        user.email = request.form["email"]
+
+        user.phone = request.form["phone"]
 
         staff_profile.phone = request.form["phone"]
 
@@ -281,6 +329,16 @@ def delete_staff(id):
     user = User.query.get_or_404(id)
     staff_profile = StaffProfile.query.get_or_404(id)
 
+    assigned_trek = Trek.query.filter_by(
+        assigned_staff_id=staff_profile.id
+    ).first()
+
+    if assigned_trek:
+
+        flash("Cannot delete staff because they are assigned to a trek.")
+
+        return redirect(url_for("admin.list_staff"))
+
     db.session.delete(staff_profile)
     db.session.delete(user)
 
@@ -308,11 +366,18 @@ def assign_staff(id):
 
     if request.method == "POST":
 
-        staff = StaffProfile.query.get(request.form["staff_id"])
+        new_staff = StaffProfile.query.get(request.form["staff_id"])
 
-        trek.assigned_staff_id = staff.id
+        if trek.assigned_staff_id:
 
-        staff.status = "assigned"
+            old_staff = StaffProfile.query.get(trek.assigned_staff_id)
+
+            if old_staff:
+                old_staff.status = "not assigned"
+
+        trek.assigned_staff_id = new_staff.id
+
+        new_staff.status = "assigned"
 
         db.session.commit()
 

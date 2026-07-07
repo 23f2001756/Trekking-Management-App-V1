@@ -72,6 +72,12 @@ def register():
         password = request.form["password"]
 
         confirm_password = request.form["confirm_password"]
+
+        full_name = request.form.get("full_name")
+
+        email = request.form.get("email")
+
+        phone = request.form.get("phone")
         
 
         # Passwords must match
@@ -87,15 +93,23 @@ def register():
             flash("Username already exists.")
             return redirect(url_for("auth.register"))
         
+        existing_email = User.query.filter_by(email=email).first()
+
+        if existing_email:
+            flash("Email already registered.", "danger")
+            return redirect(url_for("auth.register"))
+        
         print("Creating new user...")
 
         # Create new user
         new_user = User(
 
             username=username,
-
-            password=generate_password_hash(password)
-
+            password=generate_password_hash(password),
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            role="Trekker"
         )
 
         db.session.add(new_user)

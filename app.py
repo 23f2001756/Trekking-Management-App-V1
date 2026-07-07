@@ -41,6 +41,9 @@ with app.app_context():
         admin=User(
             username='admin',
             password=generate_password_hash('admin123'),
+            full_name="System Administrator",
+            email="admin@trek.com",
+            phone="9999999999",
             role='Admin'
         )
         db.session.add(admin)
@@ -55,6 +58,9 @@ with app.app_context():
         staff = User(
         username="staff1",
         password=generate_password_hash("staff123"),
+        full_name="Sai Neeraj",
+        email="staff1@trek.com",
+        phone="9876543210",
         role="Staff"
     )
 
