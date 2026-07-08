@@ -1,0 +1,140 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Update Profile
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Trekker Panel</h4>
+
+<a href="{{ url_for('user.user_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="#">
+    Available Treks
+</a>
+
+<a href="#">
+    My Bookings
+</a>
+
+<a href="{{ url_for('user.edit_profile') }}" class="active">
+    Profile
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Update Profile
+</h2>
+
+<div class="info-card">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+            <div class="alert alert-success">
+
+                {% for message in messages %}
+
+                    {{ message }}
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Username
+            </label>
+
+            <input
+                type="text"
+                class="form-control"
+                value="{{ current_user.username }}"
+                readonly>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                name="full_name"
+                class="form-control"
+                value="{{ current_user.full_name }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Email
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                class="form-control"
+                value="{{ current_user.email }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Phone Number
+            </label>
+
+            <input
+                type="text"
+                name="phone"
+                class="form-control"
+                value="{{ current_user.phone }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Role
+            </label>
+
+            <input
+                type="text"
+                class="form-control"
+                value="{{ current_user.role }}"
+                readonly>
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-success">
+
+            Update Profile
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
