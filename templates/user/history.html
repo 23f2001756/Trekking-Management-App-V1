@@ -1,0 +1,99 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+Trekking History
+{% endblock %}
+
+{% block sidebar %}
+
+<h4 class="text-center mb-4">Trekker Panel</h4>
+
+<a href="{{ url_for('user.user_dashboard') }}">
+    Dashboard
+</a>
+
+<a href="{{ url_for('user.available_treks') }}">
+    Available Treks
+</a>
+
+<a href="{{ url_for('user.my_bookings') }}">
+    My Bookings
+</a>
+
+<a href="{{ url_for('user.trekking_history') }}" class="active">
+    Trek History
+</a>
+
+<a href="{{ url_for('user.edit_profile') }}">
+    Profile
+</a>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="dashboard-title">
+    Trekking History
+</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>Trek</th>
+
+            <th>Destination</th>
+
+            <th>Difficulty</th>
+
+            <th>Duration</th>
+
+            <th>Booking Date</th>
+
+            <th>Completed On</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for booking in history %}
+
+        <tr>
+
+            <td>{{ booking.trek.trek_name }}</td>
+
+            <td>{{ booking.trek.destination }}</td>
+
+            <td>{{ booking.trek.difficulty }}</td>
+
+            <td>{{ booking.trek.duration }} Days</td>
+
+            <td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
+
+            <td>{{ booking.trek.end_date.strftime("%d-%m-%Y") }}</td>
+
+        </tr>
+
+    {% else %}
+
+        <tr>
+
+            <td colspan="6" class="text-center">
+
+                No completed treks found.
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

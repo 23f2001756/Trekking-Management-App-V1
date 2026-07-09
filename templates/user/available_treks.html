@@ -16,13 +16,19 @@ Available Treks
     Available Treks
 </a>
 
-<a href="#">
+<a href="{{ url_for('user.my_bookings')}}">
     My Bookings
+</a>
+
+<a href="{{ url_for('user.trekking_history') }}">
+    Trek History
 </a>
 
 <a href="{{ url_for('user.edit_profile') }}">
     Profile
 </a>
+
+
 
 {% endblock %}
 
@@ -31,6 +37,16 @@ Available Treks
 <h2 class="dashboard-title">
     Available Treks
 </h2>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 
 <form method="GET" class="row mb-4">
 
@@ -129,7 +145,7 @@ Available Treks
 
             <td>{{ trek.duration }} Days</td>
 
-            <td>₹ {{ trek.price }}</td>
+            <td>{{ trek.price }}</td>
 
             <td>{{ trek.available_slots }}</td>
 

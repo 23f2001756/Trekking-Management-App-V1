@@ -152,7 +152,7 @@ def book_trek(id):
     trek=Trek.query.get_or_404(id)
 
     # Trek must be open
-    if trek.status != "Open":
+    if trek.status != "Open": 
 
         flash("This trek is not open for booking.")
 
@@ -184,7 +184,51 @@ def book_trek(id):
 
     flash("Trek booked successfully!")
 
-    return redirect(url_for("user.available_treks"))
+    return redirect(url_for("user.my_bookings"))
+
+
+@user_bp.route("/user/bookings")
+@login_required
+def my_bookings():
+
+    if current_user.role != "Trekker":
+
+        if current_user.role == "Admin":
+            return redirect(url_for("admin.admin_dashboard"))
+
+        return redirect(url_for("staff.staff_dashboard"))
+
+    bookings=Booking.query.filter_by(
+        user_id=current_user.id
+    ).order_by(
+        Booking.booking_date.desc()
+    ).all()
+
+    return render_template("user/my_bookings.html",bookings=bookings)
+
+
+@user_bp.route("/user/history")
+@login_required
+def trekking_history():
+
+    if current_user.role != "Trekker":
+
+        if current_user.role == "Admin":
+            return redirect(url_for("admin.admin_dashboard"))
+
+        return redirect(url_for("staff.staff_dashboard"))
+
+    history = Booking.query.join(Trek).filter(
+        Booking.user_id == current_user.id,
+        Trek.status == "Completed"
+    ).order_by(
+        Trek.end_date.desc()
+    ).all()
+
+    return render_template(
+        "user/history.html",
+        history=history
+    )
 
 
 

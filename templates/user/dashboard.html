@@ -16,11 +16,19 @@ Trekker Dashboard
     Available Treks
 </a>
 
-<a href="#"> My Bookings</a>
+<a href="{{ url_for('user.my_bookings')}}">
+    My Bookings
+</a>
+
+<a href="{{ url_for('user.trekking_history') }}">
+    Trek History
+</a>
 
 <a href="{{ url_for('user.edit_profile')}}">
     Profile
 </a>
+
+
 
 {% endblock %}
 
@@ -49,19 +57,23 @@ Trekker Dashboard
 
 <div class="row g-4">
 
-    <div class="col-md-4">
+    <div class="col-md-3">
 
-        <div class="action-card">
+        <a href="{{ url_for('user.available_treks') }}"
+           class="text-decoration-none">
 
-            <h5>Browse Treks</h5>
+            <div class="action-card">
 
-        </div>
+                <h5>Browse Treks</h5>
+
+            </div>
+        </a>
 
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
 
-        <a href="{{ url_for('user.available_treks')}}" class="text-decoration-none">
+        <a href="{{ url_for('user.my_bookings')}}" class="text-decoration-none">
 
             <div class="action-card">
 
@@ -72,7 +84,7 @@ Trekker Dashboard
 
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         
         <a href="{{url_for('user.edit_profile')}}"
            class="text-decoration-none">
@@ -84,6 +96,19 @@ Trekker Dashboard
             </div>
         </a>
 
+    </div>
+
+    <div class="col-md-3">
+
+        <a href="{{ url_for('user.trekking_history') }}"
+           class="text-decoration-none">
+
+            <div class="action-card">
+
+                <h5>Trek History</h5>
+
+            </div>
+       </a>
     </div>
 
 </div>
