@@ -1,0 +1,191 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}
+    Staff Approval Requests
+{% endblock %}
+
+{% block sidebar %}
+
+    <h4 class="text-center mb-4">Admin Panel</h4>
+
+    <a href="{{ url_for('admin.admin_dashboard') }}">
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('admin.list_treks') }}">
+        Manage Treks
+    </a>
+
+    <a href="{{ url_for('admin.pending_staff') }}" class="active">
+        Staff Approval Requests
+    </a>
+
+    <a href="{{ url_for('admin.list_staff') }}">
+        Manage Staff
+    </a>
+
+    <a href="{{ url_for('admin.list_users')}}">
+        Manage Users
+    </a>
+
+    <a href="{{ url_for('admin.list_bookings') }}">
+        View Bookings
+    </a>
+
+{% endblock %}
+
+{% block content %}
+
+    <h2 class="dashboard-title">
+        Pending Staff Requests
+    </h2>
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissible fade show">
+
+                    {{ message }}
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+    <div class="info-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h4>Pending Staff Registrations</h4>
+
+            <form
+                method="GET"
+                action="{{ url_for('admin.list_staff') }}"
+                class="d-flex">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control me-2"
+                placeholder="Search Staff..."
+                value="{{ search }}">
+
+            <button
+                type="submit"
+                class="btn btn-primary me-2">
+                Search
+            </button>
+
+            <a
+                href="{{ url_for('admin.list_staff') }}"
+                class="btn btn-secondary me-2 d-flex align-items-center justify-content-center">
+
+                Reset
+
+            </a>
+            
+        </form>
+
+        </div>
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Username</th>
+
+                    <th>Phone</th>
+
+                    <th>Experience</th>
+
+                    <th>Approval Status</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% if pending_staff %}
+
+                    {% for staff in pending_staff %}
+
+                        <tr>
+
+                            <td>{{ staff.id }}</td>
+
+                            <td>{{ staff.username }}</td>
+
+                            <td>{{ staff.staff_profile.phone }}</td>
+
+                            <td>{{ staff.staff_profile.experience }} Years</td>
+
+                            <td>
+                                <span class="text-warning">
+                                    {{ staff.approval_status }}
+                                </span>
+
+                            </td>
+
+                           <td>
+
+                                <a
+                                    href="{{ url_for('admin.approve_staff', id=staff.id) }}"
+                                    class="btn btn-success btn-sm">
+                                    Approve
+                                </a>
+
+                                <a
+                                    href="{{ url_for('admin.reject_staff', id=staff.id) }}"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Reject this staff registration?')">
+                                    Reject
+                                </a>
+
+                            </td>
+
+                            
+
+                        </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="text-center">
+                            No Pending Staff Requests
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+{% endblock %}

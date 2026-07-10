@@ -194,23 +194,114 @@ def list_staff():
 
     if search:
 
-        staff_members = User.query.filter(
+        staff_members = User.query.join(StaffProfile).filter(
             User.role == "Staff",
+            User.approval_status == "Approved",
             (
                 User.username.ilike(f"%{search}%") |
                 StaffProfile.phone.ilike(f"%{search}%")
             )
-        ).join(StaffProfile).order_by(User.id).all()
+        ).order_by(User.id).all()
 
     else:
 
         staff_members = User.query.filter_by(
-            role="Staff"
+            role="Staff",
+            approval_status="Approved"
         ).order_by(User.id).all()
 
-    
+    print("===== STAFF MEMBERS =====")
 
+    for staff in staff_members:
+        print(
+        staff.username,
+        staff.approval_status
+    )
+
+    
     return render_template("admin/staff/list.html",staff_members=staff_members)
+
+@admin_bp.route("/admin/staff/pending")
+@login_required
+def pending_staff():
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    pending_staff = User.query.filter_by(
+        role="Staff",
+        approval_status="Pending"
+    ).order_by(User.id).all()
+
+    return render_template(
+        "admin/staff/pending.html",
+        pending_staff=pending_staff
+    )
+
+
+@admin_bp.route("/admin/staff/approve/<int:id>")
+@login_required
+def approve_staff(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    user = User.query.get_or_404(id)
+
+    if user.role != "Staff":
+
+        flash("Invalid staff account.")
+
+        return redirect(url_for("admin.pending_staff"))
+
+    user.approval_status = "Approved"
+
+    db.session.commit()
+
+    flash("Staff approved successfully!")
+
+    return redirect(url_for("admin.pending_staff"))
+
+@admin_bp.route("/admin/staff/reject/<int:id>")
+@login_required
+def reject_staff(id):
+
+    if current_user.role != "Admin":
+
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    user = User.query.get_or_404(id)
+
+    if user.role != "Staff":
+
+        flash("Invalid staff account.")
+
+        return redirect(url_for("admin.pending_staff"))
+
+    staff_profile = StaffProfile.query.get(id)
+
+    if staff_profile:
+
+        db.session.delete(staff_profile)
+
+    db.session.delete(user)
+
+    db.session.commit()
+
+    flash("Staff registration rejected.")
+
+    return redirect(url_for("admin.pending_staff"))
 
 
 @admin_bp.route("/admin/staff/create", methods=["GET", "POST"])
@@ -362,7 +453,10 @@ def assign_staff(id):
 
     trek = Trek.query.get_or_404(id)
 
-    staff_members = StaffProfile.query.filter_by(status="not assigned").all()
+    staff_members = StaffProfile.query.join(User).filter(
+    User.approval_status == "Approved",
+    StaffProfile.status == "not assigned"
+    ).all()
 
     if request.method == "POST":
 

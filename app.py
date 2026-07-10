@@ -52,37 +52,7 @@ with app.app_context():
     
     else:
         print('Admin user already exists')
-    staff = User.query.filter_by(username="staff1").first()
-
-    if staff is None:
-        staff = User(
-        username="staff1",
-        password=generate_password_hash("staff123"),
-        full_name="Sai Neeraj",
-        email="staff1@trek.com",
-        phone="9876543210",
-        role="Staff"
-    )
-
-        db.session.add(staff)
-        db.session.commit()
-
-    # Create Staff Profile
-        staff_profile = StaffProfile(
-        id=staff.id,
-        phone="9876543210",
-        experience=2,
-        status="not assigned"
-    )
-
-        db.session.add(staff_profile)
-        db.session.commit()
-
-        print("Staff user created successfully")
-
-    else:
-
-        print("Staff user already exists")
+    
 
 '''@app.route("/")
 def home():

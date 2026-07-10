@@ -13,6 +13,8 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(15))
     role=db.Column(db.String(20),default='Trekker') # Admin,Staff,Trekker
+    # Staff registration approval status
+    approval_status = db.Column(db.String(20),default="Pending")  # Pending, Approved
     is_active=db.Column(db.Boolean(),default=True)
 
     # Relationships

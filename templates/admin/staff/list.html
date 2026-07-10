@@ -16,6 +16,10 @@
         Manage Treks
     </a>
 
+    <a href="{{ url_for('admin.pending_staff') }}" >
+        Staff Approval Requests
+    </a>
+
     <a href="{{ url_for('admin.list_staff') }}" class="active" >
         Manage Staff
     </a>
@@ -93,12 +97,7 @@
             </a>
 
 
-            <a
-                href="{{url_for('admin.create_staff')}}"
-                class="btn btn-success"
-            >
-                + Add Staff
-            </a>
+            
             
         </form>
 
