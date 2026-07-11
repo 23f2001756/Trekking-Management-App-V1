@@ -16,14 +16,12 @@ def user_dashboard():
                 return redirect(url_for("admin.admin_dashboard"))
 
             return redirect(url_for("staff.staff_dashboard"))
-        
-        return render_template("user/dashboard.html")
 
         total_bookings=Booking.query.filter_by(user_id=current_user.id).count()
 
-        upcoming_treks=Booking.query.join(Booking.trek).filter(
+        open_treks=Booking.query.join(Booking.trek).filter(
             Booking.user_id == current_user.id,
-            Booking.trek.has(status="Completed") 
+            Booking.trek.has(status="Open") 
         ).count()
 
         completed_treks = Booking.query.join(Booking.trek).filter(
@@ -34,7 +32,7 @@ def user_dashboard():
         return render_template(
              "user/dashboard.html",
              total_bookings=total_bookings,
-             upcoming_treks=upcoming_treks,
+             open_treks=open_treks,
              completed_treks=completed_treks
             )
 

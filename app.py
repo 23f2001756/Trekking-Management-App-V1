@@ -44,7 +44,8 @@ with app.app_context():
             full_name="System Administrator",
             email="admin@trek.com",
             phone="9999999999",
-            role='Admin'
+            role='Admin',
+            approval_status="Approved"
         )
         db.session.add(admin)
         db.session.commit()

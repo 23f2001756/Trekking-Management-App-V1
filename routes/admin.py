@@ -210,14 +210,7 @@ def list_staff():
             approval_status="Approved"
         ).order_by(User.id).all()
 
-    print("===== STAFF MEMBERS =====")
-
-    for staff in staff_members:
-        print(
-        staff.username,
-        staff.approval_status
-    )
-
+    
     
     return render_template("admin/staff/list.html",staff_members=staff_members)
 
@@ -576,13 +569,15 @@ def toggle_staff_status(id):
 @login_required
 def list_bookings():
 
-    bookings = Booking.query.order_by(
-        Booking.id.desc()
-    ).all()
+    if current_user.role != "Admin":
 
-    return render_template(
-        "admin/bookings/list.html",
-        bookings=bookings
-    )
+        if current_user.role == "Staff":
+            return redirect(url_for("staff.staff_dashboard"))
+
+        return redirect(url_for("user.user_dashboard"))
+
+    bookings = Booking.query.order_by(Booking.id.desc()).all()
+
+    return render_template("admin/bookings/list.html",bookings=bookings)
 
 

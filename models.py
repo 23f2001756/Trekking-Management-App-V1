@@ -66,9 +66,9 @@ class Booking(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     user_id=db.Column(db.Integer,db.ForeignKey("users.id"),nullable=False)
     trek_id=db.Column(db.Integer,db.ForeignKey("treks.id"),nullable=False)
-    booking_status = db.Column(db.String(20),default="Pending")  # Pending, Approved, Cancelled
+    booking_status = db.Column(db.String(20),default="Booked")  # Booked,Completed,Cancelled
     booking_date = db.Column(db.DateTime,default=datetime.utcnow)
-    payment_status = db.Column(db.String(20),default="Pending")  # Pending, Paid, Failed
+    payment_status = db.Column(db.String(20),default="Pending")  # Pending,Paid,Failed
 
     def __repr__(self):
         return f"<Booking {self.id}>"

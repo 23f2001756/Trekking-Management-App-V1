@@ -50,9 +50,13 @@ Trekking History
 
             <th>Duration</th>
 
+            <th>Start Date</th>
+
+            <th>End Date</th>
+
             <th>Booking Date</th>
 
-            <th>Completed On</th>
+            <th>Booking Status</th>
 
         </tr>
 
@@ -72,17 +76,22 @@ Trekking History
 
             <td>{{ booking.trek.duration }} Days</td>
 
-            <td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
+            <td>{{ booking.trek.start_date.strftime("%d-%m-%Y") }}</td>
 
             <td>{{ booking.trek.end_date.strftime("%d-%m-%Y") }}</td>
 
+            <td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
+
+            <td>{{ booking.booking_status }}</td>
+
+            
         </tr>
 
     {% else %}
 
         <tr>
 
-            <td colspan="6" class="text-center">
+            <td colspan="8" class="text-center">
 
                 No completed treks found.
 

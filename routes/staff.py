@@ -16,9 +16,6 @@ def staff_dashboard():
 
         return redirect(url_for("user.user_dashboard"))
 
-    return render_template("staff/dashboard.html")
-    
-
     assigned_treks = Trek.query.filter_by(assigned_staff_id=current_user.id ).all()
 
     total_assigned = len(assigned_treks)
@@ -119,9 +116,20 @@ def manage_trek(trek_id):
         return redirect(url_for("staff.assigned_treks"))
 
     if request.method == "POST":
+        available_slots = int(request.form["available_slots"])
 
-        trek.available_slots = int(request.form["available_slots"])
+        if available_slots < 0:
+            flash("Available slots cannot be negative.", "danger")
+            return redirect(url_for("staff.manage_trek", trek_id=trek.id))
+
+        trek.available_slots = available_slots
+
         trek.status = request.form["status"]
+
+        if trek.status == "Completed":
+            for booking in trek.bookings:
+                if booking.booking_status == "Booked":
+                    booking.booking_status = "Completed"
 
         db.session.commit()
 

@@ -16,9 +16,7 @@ Participants
     Assigned Treks
 </a>
 
-<a href="#" class="active">
-    Participants
-</a>
+
 
 <a href="{{ url_for('staff.staff_profile') }}">
     My Profile
@@ -41,14 +39,15 @@ Participants
     <thead class="table-dark">
 
         <tr>
-
             <th>Booking ID</th>
             <th>Username</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
             <th>Booking Date</th>
             <th>Booking Status</th>
             <th>Payment Status</th>
-
-        </tr>
+       </tr>
 
     </thead>
 
@@ -61,6 +60,12 @@ Participants
             <td>{{ booking.id }}</td>
 
             <td>{{ booking.user.username }}</td>
+
+            <td>{{ booking.user.full_name }}</td>
+
+            <td>{{ booking.user.email }}</td>
+
+            <td>{{ booking.user.phone }}</td>
 
             <td>{{ booking.booking_date.strftime("%d-%m-%Y") }}</td>
 
