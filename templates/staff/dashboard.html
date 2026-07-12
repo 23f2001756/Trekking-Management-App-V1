@@ -36,9 +36,39 @@ Staff Dashboard
 
     <hr>
 
-    <p><strong>Username:</strong> {{ current_user.username }}</p>
+    <p><strong>Full Name:</strong> {{current_user.full_name}}</p>
 
-    <p><strong>Role:</strong> {{ current_user.role }}</p>
+    <p><strong>Username:</strong> {{ current_user.username}}</p>
+
+    <p><strong>Email:</strong> {{current_user.email}}</p>
+
+    <p><strong>Phone:</strong> {{current_user.phone}}</p>
+
+    <p><strong>Role:</strong> {{ current_user.role}}</p>
+
+    <p>
+
+        <strong>Experience:</strong>
+
+        {% if current_user.staff_profile.experience %}
+
+            {{ current_user.staff_profile.experience }} Years
+
+        {% else %}
+
+            Not Updated
+
+        {% endif %}
+    </p>
+
+    <p>
+
+        <strong>Assignment Status:</strong>
+
+        {{ current_user.staff_profile.status.title() }}
+
+    </p>
+
 
 </div>
 
@@ -76,7 +106,7 @@ Staff Dashboard
 
 <div class="row g-4">
 
-    <div class="col-md-4">
+    <div class="col-md-6">
 
         <a href="{{ url_for('staff.assigned_treks') }}" class="text-decoration-none">
 
@@ -103,7 +133,7 @@ Staff Dashboard
 
     </div>-->
 
-    <div class="col-md-4">
+    <!--<div class="col-md-4">
         <a href=" {{url_for('staff.assigned_treks')}}" class="text-decoration-none">
 
             <div class="action-card">
@@ -113,9 +143,9 @@ Staff Dashboard
             </div>
         </a>
 
-    </div>
+    </div>-->
 
-    <div class="col-md-4">
+    <div class="col-md-6">
 
         <a href="{{ url_for('staff.staff_profile') }}" class="text-decoration-none">
 

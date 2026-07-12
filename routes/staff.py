@@ -47,8 +47,14 @@ def staff_profile():
 
     if request.method == "POST":
 
+        current_user.full_name = request.form["full_name"]
+
+        current_user.email = request.form["email"]
+
+        current_user.phone = request.form["phone"]
+
         profile.phone = request.form["phone"]
-        profile.experience = request.form["experience"]
+        profile.experience = int(request.form["experience"]) if request.form["experience"] else None
 
         db.session.commit()
 

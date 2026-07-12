@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Trekking Management Application</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold">
+
+             Trekking Management Application
+
+        </a>
+
+        <div>
+
+            <a href="{{ url_for('auth.login') }}"
+               class="btn btn-light">
+
+                Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- Hero Section -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h1 class="display-4 fw-bold">
+
+                    Explore Nature
+
+                </h1>
+
+                <h2 class="text-success fw-bold mb-4">
+
+                    One Trek At A Time
+
+                </h2>
+
+                <p class="lead text-muted">
+
+                    Plan trekking adventures, manage bookings,
+                    register trek staff and explore breathtaking
+                    destinations with our Trekking Management
+                    Application.
+
+                </p>
+
+                <div class="mt-4">
+
+                    <a href="{{ url_for('auth.login') }}"
+                       class="btn btn-success btn-lg me-2">
+
+                        Login
+
+                    </a>
+
+                    <a href="{{ url_for('auth.register') }}"
+                       class="btn btn-outline-success btn-lg me-2">
+
+                        Register as Trekker
+
+                    </a>
+
+                    <a href="{{ url_for('auth.staff_register') }}"
+                       class="btn btn-outline-dark btn-lg">
+
+                        Register as Staff
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img src="{{ url_for('static',
+                        filename='images/image.png') }}"
+                     class="img-fluid hero-image">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Features -->
+
+<section class="container py-5">
+
+    <h2 class="text-center fw-bold mb-5">
+
+        Why Choose Our Platform?
+
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+
+            <div class="feature-card">
+
+                <h4>
+
+                    Browse Treks
+
+                </h4>
+
+                <p>
+
+                    Explore trekking destinations
+                    based on location and difficulty.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="feature-card">
+
+                <h4>
+
+                    Easy Booking
+
+                </h4>
+
+                <p>
+
+                    Book your favourite trekking
+                    adventures with a single click.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="feature-card">
+
+                <h4>
+
+                    Trek History
+
+                </h4>
+
+                <p>
+
+                    View completed and upcoming
+                    trekking adventures anytime.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="feature-card">
+
+                <h4>
+
+                    Professional Staff
+
+                </h4>
+
+                <p>
+
+                    Experienced trek guides ensure
+                    a safe and enjoyable journey.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Footer -->
+
+<footer class="bg-dark text-white py-4 mt-4">
+
+    <div class="container text-center">
+
+        <h5>
+
+            Trekking Management Application
+
+        </h5>
+
+        <p class="mb-0">
+
+            Explore • Book • Trek • Repeat
+
+        </p>
+
+        
+    </div>
+
+</footer>
+
+</body>
+
+</html>

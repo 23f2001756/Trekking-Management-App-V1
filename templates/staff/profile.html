@@ -51,6 +51,56 @@ My Profile
 <form method="POST">
 
     <div class="mb-3">
+
+        <label class="form-label">
+
+            Full Name
+
+        </label>
+
+        <input
+            type="text"
+            name="full_name"
+            class="form-control"
+            value="{{ current_user.full_name }}"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+
+            Username
+
+        </label>
+
+        <input
+            type="text"
+            class="form-control"
+            value="{{ current_user.username }}"
+            readonly>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+
+            Email
+
+        </label>
+
+        <input
+            type="email"
+            name="email"
+            class="form-control"
+            value="{{ current_user.email }}"
+            required>
+
+    </div>
+
+    <div class="mb-3">
         <label class="form-label">Phone</label>
         <input
             type="text"
@@ -59,6 +109,39 @@ My Profile
             value="{{ profile.phone }}"
             required>
     </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+
+            Role
+
+        </label>
+
+        <input
+            type="text"
+            class="form-control"
+            value="{{ current_user.role }}"
+            readonly>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+
+            Assignment Status
+
+        </label>
+
+        <input
+            type="text"
+            class="form-control"
+            value="{{ profile.status.title() }}"
+            readonly>
+
+    </div>
+
 
     <div class="mb-3">
         <label class="form-label">Experience (Years)</label>
@@ -75,7 +158,5 @@ My Profile
 
 </form>
 
-
-    
 
 {% endblock %}

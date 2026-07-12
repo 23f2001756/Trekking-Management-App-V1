@@ -11,7 +11,7 @@ auth_bp = Blueprint("auth", __name__)
 # Home Route
 @auth_bp.route("/")
 def home():
-    return redirect(url_for("auth.login"))
+    return render_template(("home.html"))
 
 @auth_bp.route("/login",methods=["GET","POST"])
 def login():
