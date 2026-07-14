@@ -149,21 +149,18 @@ def book_trek(id):
 
     trek=Trek.query.get_or_404(id)
 
-    # Trek must be open
     if trek.status != "Open": 
 
         flash("This trek is not open for booking.")
 
         return redirect(url_for("user.trek_details", id=id))
 
-    # Slots available
     if trek.available_slots <= 0:
 
         flash("No slots available for this trek.")
 
         return redirect(url_for("user.trek_details", id=id))
 
-    # Duplicate booking check
     existing_booking=Booking.query.filter_by(user_id=current_user.id,trek_id=id).first()
 
     if existing_booking:
@@ -196,8 +193,9 @@ def my_bookings():
 
         return redirect(url_for("staff.staff_dashboard"))
 
-    bookings=Booking.query.filter_by(
-        user_id=current_user.id
+    bookings=Booking.query.filter(
+        Booking.user_id==current_user.id,
+        Booking.booking_status !="Completed"
     ).order_by(
         Booking.booking_date.desc()
     ).all()
@@ -223,10 +221,7 @@ def trekking_history():
         Trek.end_date.desc()
     ).all()
 
-    return render_template(
-        "user/history.html",
-        history=history
-    )
+    return render_template("user/history.html",history=history)
 
 
 

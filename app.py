@@ -31,7 +31,6 @@ app.config["SECRET_KEY"] = "your-secret-key"
 db.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
-
     return User.query.get(int(user_id))
 
 with app.app_context():
@@ -52,12 +51,7 @@ with app.app_context():
         print('Admin user created succesfully')
     
     else:
-        print('Admin user already exists')
-    
-
-'''@app.route("/")
-def home():
-    return redirect(url_for("login"))'''
+        print('Admin user already exists') 
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -8,7 +8,6 @@ from models import db,User,StaffProfile
 # Blueprint
 auth_bp = Blueprint("auth", __name__)
 
-# Home Route
 @auth_bp.route("/")
 def home():
     return render_template(("home.html"))
@@ -20,24 +19,20 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        # Search user
         user = User.query.filter_by(username=username).first()
 
-        # Username exists?
         if user is None:
 
             flash("Invalid Username")
 
             return redirect(url_for("auth.login"))
 
-        # Password correct?
         if not check_password_hash(user.password, password):
 
             flash("Invalid Password")
 
             return redirect(url_for("auth.login"))
         
-        # Check if account is active
         if not user.is_active:
 
             flash("Your account has been deactivated. Please contact the administrator.")
@@ -50,10 +45,7 @@ def login():
 
             return redirect(url_for("auth.login"))
 
-       
         login_user(user)
-
-        # Redirect based on role
 
         if user.role == "Admin":
 
@@ -85,14 +77,10 @@ def register():
 
         phone = request.form.get("phone")
         
-
-        # Passwords must match
         if password != confirm_password:
-            
             flash("Passwords do not match.")
             return redirect(url_for("auth.register"))
 
-        # Username already exists
         existing_user = User.query.filter_by(username=username).first()
 
         if existing_user:
@@ -107,29 +95,26 @@ def register():
         
         print("Creating new user...")
 
-        # Create new user
+        
         new_user = User(
-
             username=username,
             password=generate_password_hash(password),
             full_name=full_name,
             email=email,
             phone=phone,
-            role="Trekker"
+            role="Trekker",
+            approval_status="Approved"
         )
 
         db.session.add(new_user)
 
         db.session.commit()
         
-        
-
         flash("Registration Successful! Please Login.")
 
         return redirect(url_for("auth.login"))
 
     return render_template("register.html")
-
 
 @auth_bp.route("/staff/register", methods=["GET", "POST"])
 def staff_register():
@@ -144,26 +129,23 @@ def staff_register():
         phone = request.form["phone"]
         experience = request.form.get("experience")
 
-        # Passwords must match
+        
         if password != confirm_password:
             flash("Passwords do not match.")
             return redirect(url_for("auth.staff_register"))
 
-        # Username already exists
         existing_user = User.query.filter_by(username=username).first()
 
         if existing_user:
             flash("Username already exists.")
             return redirect(url_for("auth.staff_register"))
 
-        # Email already exists
         existing_email = User.query.filter_by(email=email).first()
 
         if existing_email:
             flash("Email already registered.")
             return redirect(url_for("auth.staff_register"))
 
-        # Create Staff User
         new_staff = User(
             username=username,
             password=generate_password_hash(password),
@@ -177,7 +159,6 @@ def staff_register():
         db.session.add(new_staff)
         db.session.commit()
 
-        # Create Staff Profile
         staff_profile = StaffProfile(
             id=new_staff.id,
             phone=phone,

@@ -17,12 +17,28 @@ def admin_dashboard():
 
         if current_user.role == "Staff":
             return redirect(url_for("staff.staff_dashboard"))
-
         return redirect(url_for("user.user_dashboard"))
 
-    return render_template("admin/dashboard.html")
+    total_treks = Trek.query.count()
 
+    total_users = User.query.filter_by(
+        role="Trekker"
+    ).count()
 
+    total_staff = User.query.filter_by(
+        role="Staff",
+        approval_status="Approved"
+    ).count()
+
+    total_bookings = Booking.query.count()
+
+    return render_template(
+        "admin/dashboard.html",
+        total_treks=total_treks,
+        total_users=total_users,
+        total_staff=total_staff,
+        total_bookings=total_bookings
+    )
 
 @admin_bp.route("/admin/treks")
 @login_required
@@ -46,10 +62,7 @@ def list_treks():
         ).order_by(Trek.id).all()
 
      else:
-
         treks = Trek.query.order_by(Trek.id).all()
-     
-    
      return render_template("admin/treks/list.html",treks=treks)
 
 
@@ -66,6 +79,26 @@ def create_trek():
 
     if request.method == "POST":
 
+        start_date = datetime.strptime(request.form["start_date"], "%Y-%m-%d").date()
+
+        end_date = datetime.strptime(request.form["end_date"], "%Y-%m-%d").date()
+
+        duration = int(request.form["duration"])
+
+        if end_date < start_date:
+
+            flash("End date cannot be earlier than start date.")
+
+            return redirect(url_for("admin.create_trek"))
+
+        expected_duration = (end_date - start_date).days + 1
+
+        if duration != expected_duration:
+
+            flash(f"Duration should be {expected_duration} day(s) based on the selected dates.")
+
+            return redirect(url_for("admin.create_trek"))
+
         trek = Trek(
             trek_name=request.form["trek_name"],
             destination=request.form["destination"],
@@ -73,14 +106,8 @@ def create_trek():
             duration=int(request.form["duration"]),
             price=request.form["price"],
             available_slots=int(request.form["available_slots"]),
-            start_date=datetime.strptime(
-                request.form["start_date"],
-                "%Y-%m-%d"
-            ).date(),
-            end_date=datetime.strptime(
-                request.form["end_date"],
-                "%Y-%m-%d"
-            ).date(),
+            start_date=datetime.strptime(request.form["start_date"],"%Y-%m-%d").date(),
+            end_date=datetime.strptime(request.form["end_date"],"%Y-%m-%d").date(),
             description=request.form["description"]
         )
 
@@ -107,6 +134,26 @@ def edit_trek(id):
     trek = Trek.query.get_or_404(id)
 
     if request.method == "POST":
+
+        start_date = datetime.strptime(request.form["start_date"],"%Y-%m-%d").date()
+
+        end_date = datetime.strptime(request.form["end_date"],"%Y-%m-%d").date()
+
+        duration = int(request.form["duration"])
+
+        if end_date < start_date:
+
+            flash("End date cannot be earlier than start date.")
+
+            return redirect(url_for("admin.edit_trek", id=id))
+
+        expected_duration = (end_date - start_date).days + 1
+
+        if duration != expected_duration:
+
+            flash(f"Duration should be {expected_duration} day(s) based on the selected dates.")
+
+            return redirect(url_for("admin.edit_trek", id=id))
 
         trek.trek_name = request.form["trek_name"]
         trek.destination = request.form["destination"]
@@ -210,8 +257,6 @@ def list_staff():
             approval_status="Approved"
         ).order_by(User.id).all()
 
-    
-    
     return render_template("admin/staff/list.html",staff_members=staff_members)
 
 @admin_bp.route("/admin/staff/pending")
@@ -230,11 +275,7 @@ def pending_staff():
         approval_status="Pending"
     ).order_by(User.id).all()
 
-    return render_template(
-        "admin/staff/pending.html",
-        pending_staff=pending_staff
-    )
-
+    return render_template("admin/staff/pending.html",pending_staff=pending_staff)
 
 @admin_bp.route("/admin/staff/approve/<int:id>")
 @login_required
@@ -297,63 +338,7 @@ def reject_staff(id):
     return redirect(url_for("admin.pending_staff"))
 
 
-@admin_bp.route("/admin/staff/create", methods=["GET", "POST"])
-@login_required
-def create_staff():
 
-    if current_user.role != "Admin":
-
-        if current_user.role == "Staff":
-            return redirect(url_for("staff.staff_dashboard"))
-
-        return redirect(url_for("user.user_dashboard"))
-
-    if request.method == "POST":
-
-        username = request.form["username"]
-        password = request.form["password"]
-        full_name = request.form["full_name"]
-        email = request.form["email"]
-        phone = request.form["phone"]
-
-        existing_user = User.query.filter_by(username=username).first()
-
-        if existing_user:
-            flash("Username already exists.")
-            return redirect(url_for("admin.create_staff"))
-
-        existing_email = User.query.filter_by(email=email).first()
-
-        if existing_email:
-            flash("Email already exists.")
-            return redirect(url_for("admin.create_staff"))
-
-        user = User(
-            username=request.form["username"],
-            password=generate_password_hash(request.form["password"]),
-            full_name=full_name,
-            email=email,
-            phone=phone,
-            role="Staff"
-        )
-
-        db.session.add(user)
-        db.session.commit()
-
-        staff_profile = StaffProfile(
-            id=user.id,
-            phone=request.form["phone"],
-            status="not assigned"
-        )
-
-        db.session.add(staff_profile)
-        db.session.commit()
-
-        flash("Staff added successfully!")
-
-        return redirect(url_for("admin.list_staff"))
-
-    return render_template("admin/staff/create.html")
 
 
 @admin_bp.route("/admin/staff/edit/<int:id>", methods=["GET", "POST"])
@@ -500,8 +485,6 @@ def list_users():
         users = User.query.filter_by(
             role="Trekker"
         ).order_by(User.id).all()
-
-   
 
     return render_template("admin/users/list.html",users=users)
 

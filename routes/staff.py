@@ -93,7 +93,6 @@ def view_participants(trek_id):
 
     trek = Trek.query.get_or_404(trek_id)
 
-    # Staff can only access their own trek
     if trek.assigned_staff_id != current_user.id:
         flash("You are not authorized to view participants for this trek.", "danger")
         return redirect(url_for("staff.assigned_treks"))
@@ -116,7 +115,6 @@ def manage_trek(trek_id):
     
     trek = Trek.query.get_or_404(trek_id)
 
-    # Staff can only manage their own trek
     if trek.assigned_staff_id != current_user.id:
         flash("You are not authorized to manage this trek.", "danger")
         return redirect(url_for("staff.assigned_treks"))
@@ -143,9 +141,6 @@ def manage_trek(trek_id):
 
         return redirect(url_for("staff.assigned_treks"))
 
-    return render_template(
-        "staff/manage_trek.html",
-        trek=trek
-    )
+    return render_template("staff/manage_trek.html",trek=trek)
 
     

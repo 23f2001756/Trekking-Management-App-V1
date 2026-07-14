@@ -13,8 +13,7 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(15))
     role=db.Column(db.String(20),default='Trekker') # Admin,Staff,Trekker
-    # Staff registration approval status
-    approval_status = db.Column(db.String(20),default="Pending")  # Pending, Approved
+    approval_status = db.Column(db.String(20),default="Pending") # Pending,Approved
     is_active=db.Column(db.Boolean(),default=True)
 
     # Relationships
@@ -37,7 +36,7 @@ class Trek(db.Model):
     start_date=db.Column(db.Date,nullable=False)
     end_date=db.Column(db.Date,nullable=False)
     description=db.Column(db.Text)
-    status=db.Column(db.String(20),default='Open') # Open,Closed,Started,Ongoing,Completed
+    status=db.Column(db.String(20),default='Open') # Open,Closed,Ongoing,Completed
     assigned_staff_id = db.Column(db.Integer,db.ForeignKey("staff_profiles.id"),nullable=True)
 
     # Relationships
